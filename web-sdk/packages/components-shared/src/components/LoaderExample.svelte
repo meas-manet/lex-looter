@@ -11,16 +11,12 @@
 </script>
 
 <LoaderBase
-	maxWidth={200}
+	maxWidth={300}
 	backgroundColor={'#000000'}
 	timeout={2000}
 	src={props.src}
 	oncomplete={() => (showText = false)}
 />
-
-{#if showText}
-	<span class="add-your-loader">Add Your Loader</span>
-{/if}
 
 <style lang="scss">
 	.add-your-loader {
