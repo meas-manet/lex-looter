@@ -1,4 +1,4 @@
-import { DEFAULT_BET_MODE_META, DEFAULT_GAME_RULE_META } from 'state-shared/src/constants';
+import { DEFAULT_BET_MODE_META, DEFAULT_GAME_RULE_META } from './constants';
 
 export type BetModeData = {
 	maxWin?: number;

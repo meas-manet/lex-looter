@@ -1,7 +1,7 @@
 import { setup, assign } from 'xstate';
 
-import { context, type Context } from 'utils-xstate/src/machineContext';
-import type { PrimaryMachines } from 'utils-xstate/src/types';
+import { context, type Context } from './machineContext';
+import type { PrimaryMachines } from './types';
 
 export const createIntermediateMachineResumeBet = (actors: {
 	resumeGame: PrimaryMachines['resumeGame'];

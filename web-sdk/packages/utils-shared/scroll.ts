@@ -1,4 +1,4 @@
-import { waitForTimeout } from 'components-ui-html/node_modules/utils-shared/wait';
+import { waitForTimeout } from './wait';
 
 export const scrollIntoView = async ({
 	element,

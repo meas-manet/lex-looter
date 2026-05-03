@@ -1,5 +1,5 @@
-import type { paths } from 'state-shared/node_modules/utils-bet/node_modules/rgs-requests/node_modules/rgs-fetcher/src/schema';
-import { fetcher } from 'state-shared/node_modules/utils-bet/node_modules/rgs-requests/node_modules/rgs-fetcher/node_modules/utils-fetcher';
+import type { paths } from './schema';
+import { fetcher } from 'utils-fetcher';
 
 export const rgsFetcher = {
 	post: async function post<

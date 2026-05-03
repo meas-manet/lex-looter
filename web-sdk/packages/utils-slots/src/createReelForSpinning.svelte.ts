@@ -1,12 +1,12 @@
-import _ from 'utils-slots/node_modules/@types/lodash';
+import _ from 'lodash';
 import { Tween } from 'svelte/motion';
 import { sineOut, backIn, linear } from 'svelte/easing';
 
-import { stateBet } from 'utils-slots/node_modules/state-shared';
-import { waitForTimeout } from 'utils-slots/node_modules/utils-shared/wait';
-import { createInterruptible } from 'utils-slots/node_modules/utils-shared/interruptible';
+import { stateBet } from 'state-shared';
+import { waitForTimeout } from 'utils-shared/wait';
+import { createInterruptible } from 'utils-shared/interruptible';
 
-import type { SpinningReelCreateOptions, SpinningReelSpinOptions, SpinType } from 'utils-slots/src/types';
+import type { SpinningReelCreateOptions, SpinningReelSpinOptions, SpinType } from './types';
 
 export type SpinningReelMotion = 'spinning' | 'bouncing' | 'stopped';
 export type SpinningReelSymbolState = 'static' | 'land' | 'spin';

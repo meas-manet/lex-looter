@@ -1,11 +1,11 @@
-import ambientRay from 'constants-shared/particleConfig/ambientRay';
-import flower from 'constants-shared/particleConfig/flower';
-import line from 'constants-shared/particleConfig/line';
-import trail from 'constants-shared/particleConfig/trail';
-import upDown from 'constants-shared/particleConfig/upDown';
-import bubble from 'constants-shared/particleConfig/bubble';
-import fountain from 'constants-shared/particleConfig/fountain';
-import snow from 'constants-shared/particleConfig/snow';
-import trailCircle from 'constants-shared/particleConfig/trailCircle';
+import ambientRay from './ambientRay';
+import flower from './flower';
+import line from './line';
+import trail from './trail';
+import upDown from './upDown';
+import bubble from './bubble';
+import fountain from './fountain';
+import snow from './snow';
+import trailCircle from './trailCircle';
 
 export { ambientRay, flower, line, trail, upDown, bubble, fountain, snow, trailCircle };

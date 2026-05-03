@@ -1,7 +1,7 @@
-import { stateI18n } from 'utils-xstate/node_modules/utils-shared/node_modules/state-shared';
+import { stateI18n } from 'state-shared';
 
-import { BOOK_AMOUNT_MULTIPLIER } from 'utils-xstate/node_modules/utils-shared/node_modules/constants-shared/bet';
-import { stateBet } from 'utils-xstate/node_modules/utils-shared/node_modules/state-shared';
+import { BOOK_AMOUNT_MULTIPLIER } from 'constants-shared/bet';
+import { stateBet } from 'state-shared';
 
 const NO_LOCALISATION_CURRENCY_MAP: Record<string, string> = {
 	XGC: 'GC',

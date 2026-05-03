@@ -1,5 +1,5 @@
-import en from 'components-ui-pixi/src/i18n/messagesMap/en';
-import zh from 'components-ui-pixi/src/i18n/messagesMap/zh';
+import en from './en';
+import zh from './zh';
 
 const messagesMap = {
 	en,

@@ -6,7 +6,7 @@ import {
 	STATE_BET,
 	STATE_AUTOBET,
 	STATE_RESUME_BET,
-} from 'utils-xstate/src/constants';
+} from './constants';
 
 export const createXstate = () => {
 	const matchesXstate = (state: string) => matchesState(state, stateXstate.value);

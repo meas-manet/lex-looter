@@ -1,4 +1,4 @@
-import type { BaseBet } from 'utils-xstate/src/types';
+import type { BaseBet } from './types';
 
 export type Context = {
 	bet: BaseBet | null;

@@ -1,10 +1,10 @@
 import { fromPromise } from 'xstate';
 
-import { API_AMOUNT_MULTIPLIER } from 'utils-xstate/node_modules/constants-shared/bet';
-import { stateBet, stateUrlDerived, stateModal } from 'utils-xstate/node_modules/state-shared';
-import { requestBet, requestEndRound } from 'utils-xstate/node_modules/rgs-requests';
+import { API_AMOUNT_MULTIPLIER } from 'constants-shared/bet';
+import { stateBet, stateUrlDerived, stateModal } from 'state-shared';
+import { requestBet, requestEndRound } from 'rgs-requests';
 
-import type { BaseBet } from 'utils-xstate/src/types';
+import type { BaseBet } from './types';
 
 const handleRequestBet = async ({ onError }: { onError: () => void }) => {
 	try {

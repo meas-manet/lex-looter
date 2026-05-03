@@ -1,6 +1,6 @@
-import _ from 'utils-book/node_modules/@types/lodash';
+import _ from 'lodash';
 
-import type { BaseBookEvent } from 'utils-book/src/types';
+import type { BaseBookEvent } from './types';
 
 const createMultiBookUtils = () => {
 	function splitBookToRounds<TBookEvent extends BaseBookEvent>({

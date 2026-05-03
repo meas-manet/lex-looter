@@ -1,4 +1,4 @@
-import { locales } from 'state-shared/node_modules/config-lingui';
+import { locales } from 'config-lingui';
 import { page } from '$app/state';
 
 export type Language = (typeof locales)[number];

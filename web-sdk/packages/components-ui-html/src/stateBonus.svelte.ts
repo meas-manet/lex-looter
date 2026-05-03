@@ -1,4 +1,4 @@
-import { stateMeta } from 'components-ui-html/node_modules/state-shared';
+import { stateMeta } from 'state-shared';
 
 export const stateBonus = $state({
 	selectedBetModeKey: 'BASE',

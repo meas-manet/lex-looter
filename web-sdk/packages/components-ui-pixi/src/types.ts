@@ -1,6 +1,6 @@
 import type { Snippet } from 'svelte';
 
-import type { ButtonProps } from 'components-ui-pixi/node_modules/components-pixi';
+import type { ButtonProps } from 'components-pixi';
 
 export type EmitterEventUi =
 	| { type: 'hotKeySpace' }

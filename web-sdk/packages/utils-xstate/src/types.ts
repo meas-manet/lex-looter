@@ -1,9 +1,9 @@
-import type { BetType } from 'utils-xstate/node_modules/rgs-requests';
+import type { BetType } from 'rgs-requests';
 
-import type { createPrimaryMachines } from 'utils-xstate/src/createPrimaryMachines';
-import type { createIntermediateMachineBet } from 'utils-xstate/src/createIntermediateMachineBet';
-import type { createIntermediateMachineAutoBet } from 'utils-xstate/src/createIntermediateMachineAutoBet';
-import type { createIntermediateMachineResumeBet } from 'utils-xstate/src/createIntermediateMachineResumeBet';
+import type { createPrimaryMachines } from './createPrimaryMachines';
+import type { createIntermediateMachineBet } from './createIntermediateMachineBet';
+import type { createIntermediateMachineAutoBet } from './createIntermediateMachineAutoBet';
+import type { createIntermediateMachineResumeBet } from './createIntermediateMachineResumeBet';
 
 export type IntermediateMachineBet = ReturnType<typeof createIntermediateMachineBet>;
 export type IntermediateMachineAutoBet = ReturnType<typeof createIntermediateMachineAutoBet>;

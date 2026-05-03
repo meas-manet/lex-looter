@@ -1,4 +1,4 @@
-import { stateI18nDerived } from 'components-ui-html/node_modules/state-shared';
+import { stateI18nDerived } from 'state-shared';
 
 export const i18nDerived = {
 	bet: () => stateI18nDerived.translate('BET'),

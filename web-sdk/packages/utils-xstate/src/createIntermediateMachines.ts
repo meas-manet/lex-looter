@@ -1,8 +1,8 @@
-import { createIntermediateMachineBet } from 'utils-xstate/src/createIntermediateMachineBet';
-import { createIntermediateMachineAutoBet } from 'utils-xstate/src/createIntermediateMachineAutoBet';
-import { createIntermediateMachineResumeBet } from 'utils-xstate/src/createIntermediateMachineResumeBet';
+import { createIntermediateMachineBet } from './createIntermediateMachineBet';
+import { createIntermediateMachineAutoBet } from './createIntermediateMachineAutoBet';
+import { createIntermediateMachineResumeBet } from './createIntermediateMachineResumeBet';
 
-import type { PrimaryMachines } from 'utils-xstate/src/types';
+import type { PrimaryMachines } from './types';
 
 const createIntermediateMachines = ({
 	resumeGame,

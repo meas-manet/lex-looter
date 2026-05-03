@@ -1,9 +1,9 @@
 import { setup, fromPromise, assign } from 'xstate';
 
-import { stateBet, stateBetDerived } from 'utils-xstate/node_modules/state-shared';
+import { stateBet, stateBetDerived } from 'state-shared';
 
-import { context, type Context } from 'utils-xstate/src/machineContext';
-import type { PrimaryMachines } from 'utils-xstate/src/types';
+import { context, type Context } from './machineContext';
+import type { PrimaryMachines } from './types';
 
 const checkSpaceHold = fromPromise(async () => {
 	if (stateBet.isSpaceHold) {

@@ -1,4 +1,4 @@
-import { WHITE } from 'components-ui-pixi/node_modules/constants-shared/colors';
+import { WHITE } from 'constants-shared/colors';
 
 export const UI_BASE_SIZE = 150;
 

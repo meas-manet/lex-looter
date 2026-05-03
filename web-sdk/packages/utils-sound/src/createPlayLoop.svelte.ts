@@ -1,6 +1,6 @@
-import type { Howl } from 'utils-sound/node_modules/@types/howler';
+import type { Howl } from 'howler';
 
-import type { PlayOptions, GetSound, GetSoundMap } from 'utils-sound/src/types';
+import type { PlayOptions, GetSound, GetSoundMap } from './types';
 
 export function createPlayLoop<TSoundName extends string>(options: {
 	howl: Howl;
