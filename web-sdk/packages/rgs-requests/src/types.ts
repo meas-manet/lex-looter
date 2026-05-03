@@ -1,4 +1,4 @@
-import type { requestBet } from './rgs-requests';
+import type { requestBet } from 'state-shared/node_modules/utils-bet/node_modules/rgs-requests/src/rgs-requests';
 
 type BaseBet = Awaited<ReturnType<typeof requestBet>>['round'];
 type NoUndefinedBaseBet = Exclude<BaseBet, undefined>;

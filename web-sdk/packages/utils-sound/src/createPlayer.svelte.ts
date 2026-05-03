@@ -1,9 +1,9 @@
-import { Howl } from 'howler';
+import { Howl } from 'utils-sound/node_modules/@types/howler';
 
 import { type LoadedAudio } from 'pixi-svelte';
-import { waitForTimeout } from 'utils-shared/wait';
+import { waitForTimeout } from 'utils-sound/node_modules/utils-shared/wait';
 
-import type { StopOptions, FadeOptions, GetSound, GetSoundMap, RateOptions } from './types';
+import type { StopOptions, FadeOptions, GetSound, GetSoundMap, RateOptions } from 'utils-sound/src/types';
 
 function createPlayer<TSoundName extends string, TPlay extends Function>(playerOptions: {
 	loadedAudio: LoadedAudio<TSoundName>;

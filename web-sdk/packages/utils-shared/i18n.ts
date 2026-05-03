@@ -1,7 +1,7 @@
-import _ from 'lodash';
+import _ from 'components-shared/node_modules/utils-shared/node_modules/@types/lodash';
 import type { Messages } from '@lingui/core';
 
-import type { Language } from 'state-shared';
+import type { Language } from 'components-shared/node_modules/utils-shared/node_modules/state-shared';
 
 export type MessagesMap = Record<Language, Messages>;
 

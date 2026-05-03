@@ -1,4 +1,4 @@
-import { stateI18nDerived, stateUrlDerived } from 'state-shared';
+import { stateI18nDerived, stateUrlDerived } from 'components-ui-pixi/node_modules/state-shared';
 
 export const i18nDerived = {
 	audio: () => stateI18nDerived.translate('AUDIO'),

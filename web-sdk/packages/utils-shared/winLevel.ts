@@ -1,6 +1,6 @@
-import _, { type Dictionary } from 'lodash';
+import _, { type Dictionary } from 'utils-shared/node_modules/@types/lodash';
 
-import { bookEventAmountToBetAmountMultiplier } from './amount';
+import { bookEventAmountToBetAmountMultiplier } from 'utils-shared/amount';
 
 type AmountMultiplierThreshold = number;
 type BaseWinLevelData = {

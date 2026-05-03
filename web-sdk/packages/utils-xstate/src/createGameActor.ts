@@ -1,15 +1,15 @@
 import { setup, createActor } from 'xstate';
 // import { inspect } from '@xstate/inspect';
 
-import type { IntermediateMachines } from './types';
-import { context, type Context } from './machineContext';
+import type { IntermediateMachines } from 'utils-xstate/src/types';
+import { context, type Context } from 'utils-xstate/src/machineContext';
 import {
 	STATE_RENDERING,
 	STATE_IDLE,
 	STATE_BET,
 	STATE_AUTOBET,
 	STATE_RESUME_BET,
-} from './constants';
+} from 'utils-xstate/src/constants';
 
 // states
 const stateRendering = {

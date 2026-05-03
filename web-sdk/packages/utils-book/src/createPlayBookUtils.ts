@@ -1,6 +1,6 @@
-import { sequence } from 'utils-shared/sequence';
+import { sequence } from 'utils-book/node_modules/utils-shared/sequence';
 
-import type { BookEventHandlerMap, GetBookEventFromMap, GetBookEventContextFromMap } from './types';
+import type { BookEventHandlerMap, GetBookEventFromMap, GetBookEventContextFromMap } from 'utils-book/src/types';
 
 export function createPlayBookUtils<TBookEventHandlerMap extends BookEventHandlerMap<any, any>>({
 	bookEventHandlerMap,

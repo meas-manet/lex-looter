@@ -1,11 +1,11 @@
 import { backOut } from 'svelte/easing';
 import { Tween } from 'svelte/motion';
 
-import { stateBet } from 'state-shared';
-import { waitForTimeout } from 'utils-shared/wait';
-import { createInterruptible } from 'utils-shared/interruptible';
+import { stateBet } from 'utils-slots/node_modules/state-shared';
+import { waitForTimeout } from 'utils-slots/node_modules/utils-shared/wait';
+import { createInterruptible } from 'utils-slots/node_modules/utils-shared/interruptible';
 
-import type { CascadingReelCreateOptions, CascadingReelSpinOptions, SpinType } from './types';
+import type { CascadingReelCreateOptions, CascadingReelSpinOptions, SpinType } from 'utils-slots/src/types';
 
 export type CascadingReelMotion = 'fallingOut' | 'hanging' | 'fallingIn' | 'stopped';
 export type CascadingReelSymbolState = 'static' | 'land' | 'spin';

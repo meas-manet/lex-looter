@@ -1,2 +1,2 @@
-export * from './src/createEventEmitter';
-export * from './src/context';
+export * from 'utils-event-emitter/src/createEventEmitter';
+export * from 'utils-event-emitter/src/context';

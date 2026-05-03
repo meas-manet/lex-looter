@@ -1,5 +1,5 @@
-import en from './en';
-import zh from './zh';
+import en from 'components-ui-html/src/i18n/messagesMap/en';
+import zh from 'components-ui-html/src/i18n/messagesMap/zh';
 
 const messagesMap = {
 	en,

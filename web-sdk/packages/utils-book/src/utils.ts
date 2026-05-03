@@ -1,8 +1,8 @@
-import { PUBLIC_CHROMATIC } from 'envs';
-import { stateUrlDerived } from 'state-shared';
-import { requestEndEvent } from 'rgs-requests';
+import { PUBLIC_CHROMATIC } from 'utils-book/node_modules/envs';
+import { stateUrlDerived } from 'utils-book/node_modules/state-shared';
+import { requestEndEvent } from 'utils-book/node_modules/rgs-requests';
 
-import type { BaseBookEvent } from './types';
+import type { BaseBookEvent } from 'utils-book/src/types';
 
 export function recordBookEvent<TBookEvent extends BaseBookEvent>({
 	bookEvent,

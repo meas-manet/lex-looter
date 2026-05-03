@@ -1,6 +1,6 @@
 import { setContext, getContext } from 'svelte';
 
-import type { createEventEmitter, EmitterEventBase } from './createEventEmitter';
+import type { createEventEmitter, EmitterEventBase } from 'utils-event-emitter/src/createEventEmitter';
 
 type ContextEventEmitter<TEmitterEvent extends EmitterEventBase> = ReturnType<
 	typeof createEventEmitter<TEmitterEvent>

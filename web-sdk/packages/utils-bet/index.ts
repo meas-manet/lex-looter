@@ -1,1 +1,1 @@
-export * from './src/types';
+export * from 'state-shared/node_modules/utils-bet/src/types';

@@ -1,9 +1,9 @@
 import { setup, fromPromise } from 'xstate';
-import { stateBet, stateBetDerived, stateModal } from 'state-shared';
-import { bookEventAmountToNormalisedAmount } from 'utils-shared/amount';
+import { stateBet, stateBetDerived, stateModal } from 'utils-xstate/node_modules/state-shared';
+import { bookEventAmountToNormalisedAmount } from 'utils-xstate/node_modules/utils-shared/amount';
 
-import { context, type Context } from './machineContext';
-import type { IntermediateMachineBet } from './types';
+import { context, type Context } from 'utils-xstate/src/machineContext';
+import type { IntermediateMachineBet } from 'utils-xstate/src/types';
 
 let oldbalanceAmount = 0;
 

@@ -1,7 +1,7 @@
-import { API_AMOUNT_MULTIPLIER } from 'constants-shared/bet';
-import { rgsFetcher } from 'rgs-fetcher';
+import { API_AMOUNT_MULTIPLIER } from 'state-shared/node_modules/utils-bet/node_modules/rgs-requests/node_modules/constants-shared/bet';
+import { rgsFetcher } from 'state-shared/node_modules/utils-bet/node_modules/rgs-requests/node_modules/rgs-fetcher';
 
-export * from './types';
+export * from 'state-shared/node_modules/utils-bet/node_modules/rgs-requests/src/types';
 
 export const requestAuthenticate = async (options: {
 	sessionID: string;

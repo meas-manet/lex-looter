@@ -1,5 +1,5 @@
 import { ResizeObserver } from 'resize-observer';
-import type { ContentRect as ContentRectType } from 'resize-observer/lib/ContentRect';
+import type { ContentRect as ContentRectType } from 'components-ui-html/node_modules/utils-resize-observer/node_modules/resize-observer/lib/ContentRect';
 
 export type ContentRect = ContentRectType;
 

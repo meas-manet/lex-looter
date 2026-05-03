@@ -1,6 +1,6 @@
-import { createEnhanceBoardPreSpin } from './createEnhanceBoardPreSpin';
-import { createEnhanceBoardSpin } from './createEnhanceBoardSpin';
-import type { Reel, GetRawSymbolFromReel } from './types';
+import { createEnhanceBoardPreSpin } from 'utils-slots/src/createEnhanceBoardPreSpin';
+import { createEnhanceBoardSpin } from 'utils-slots/src/createEnhanceBoardSpin';
+import type { Reel, GetRawSymbolFromReel } from 'utils-slots/src/types';
 
 export function createEnhanceBoard() {
 	function enhanceBoard<TReel extends Reel<any, any>>({ board }: { board: TReel[] }) {
