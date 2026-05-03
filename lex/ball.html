@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CORNER CRASH | BONUS PRO EDITION</title>
+    <style>
+        :root {
+            --bg: #0f212e; --panel: #1a2c38; --accent: #00e701;
+            --danger: #ff4d4d; --clone: #ff00ff; --border: #2f4553;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            background: var(--bg); color: white; font-family: 'Arial', sans-serif; 
+            display: flex; flex-direction: column; align-items: center; 
+            min-height: 100vh; padding: 10px; touch-action: manipulation;
+        }
+
+        #game-scaler {
+            display: flex; flex-direction: column; align-items: center;
+            transform-origin: top center;
+        }
+
+        #header {
+            width: 800px; display: flex; justify-content: space-between;
+            background: var(--panel); padding: 12px; border-radius: 8px; 
+            border: 1px solid var(--border); margin-bottom: 10px;
+        }
+
+        #game-container { 
+            position: relative; width: 800px; height: 500px;
+            background: #07141d; border: 4px solid var(--border); overflow: hidden;
+        }
+
+        /* --- PAYOUT POPUP --- */
+        #popup-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); display: none;
+            flex-direction: column; align-items: center; justify-content: center;
+            z-index: 100; backdrop-filter: blur(8px);
+        }
+        #popup-content {
+            background: var(--panel); padding: 40px; border-radius: 16px;
+            border: 2px solid var(--accent); box-shadow: 0 0 40px rgba(0, 231, 1, 0.2);
+            text-align: center; min-width: 320px;
+        }
+        #popup-title { font-size: 1.2em; color: #b1bad3; text-transform: uppercase; letter-spacing: 2px; }
+        #popup-mult { font-size: 4.5em; font-weight: 900; color: var(--accent); margin: 10px 0; }
+        #popup-payout { font-size: 2.2em; font-weight: bold; color: white; margin-bottom: 25px; }
+        .popup-btn {
+            background: var(--accent); color: #000; border: none; padding: 15px 50px;
+            border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 1.1em; width: 100%;
+        }
+
+        .ball { position: absolute; width: 35px; height: 35px; z-index: 10; }
+        .ball img, .object img { width: 100%; height: 100%; object-fit: contain; }
+        .object { position: absolute; width: 40px; height: 40px; transform: translate(-50%, -50%); z-index: 5; }
+
+        .corner { 
+            position: absolute; width: 50px; height: 50px; background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
+        }
+        .c-val { font-size: 0.9em; font-weight: bold; pointer-events: none; }
+        #tl { top: 0; left: 0; } #tr { top: 0; right: 0; } #bl { bottom: 0; left: 0; } #br { bottom: 0; right: 0; }
+
+        #controls { 
+            width: 800px; display: grid; grid-template-columns: 1fr 1fr 1fr; 
+            gap: 10px; margin-top: 20px; 
+        }
+
+        .btn { border: none; padding: 15px; border-radius: 4px; cursor: pointer; font-weight: bold; background: var(--panel); color: white; border: 1px solid var(--border); }
+        #start-btn { background: var(--accent); color: #000; }
+        
+        #tumble-overlay { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); text-align: center; pointer-events: none; }
+        .tumble-amt { font-size: 2.5em; font-weight: bold; color: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <div id="game-scaler">
+        <div id="header">
+            <div>BALANCE: <span id="wallet-display" style="color: var(--accent); font-weight: bold;">$1000.00</span></div>
+            <div id="mode-text" style="font-size: 0.8em; color: #b1bad3;">STANDARD MODE</div>
+        </div>
+
+        <div id="game-container">
+            <div id="popup-overlay">
+                <div id="popup-content">
+                    <div id="popup-title">YOU WON</div>
+                    <div id="popup-mult">x1.0</div>
+                    <div id="popup-payout">$1.00</div>
+                    <button class="popup-btn" onclick="closePopup()">CONTINUE</button>
+                </div>
+            </div>
+
+            <div id="tumble-overlay">
+                <div id="val-display" class="tumble-amt">$0.00</div>
+                <div id="bounce-display" style="font-size: 0.9em; color: #b1bad3;">0 / 40 BOUNCES</div>
+            </div>
+            <div class="corner" id="tl"><span class="c-val">NONE</span></div>
+            <div class="corner" id="tr"><span class="c-val">NONE</span></div>
+            <div class="corner" id="bl"><span class="c-val">NONE</span></div>
+            <div class="corner" id="br"><span class="c-val">NONE</span></div>
+        </div>
+
+        <div id="controls">
+            <button id="start-btn" class="btn">BET $1.00</button>
+            <button id="bonus1-btn" class="btn">NO BOOM ($100)</button>
+            <button id="bonus2-btn" class="btn">START CLONE ($170)</button>
+        </div>
+    </div>
+
+<script>
+    const ASSETS = {
+        mainBall: 'ball.png', cloneBall: 'clone2.png', boom: 'boom.png',
+        minus: '50.png', sticky: 'escape.png', special: 'clone.png'
+    };
+
+    const SOUNDS = {
+        bounce: new Audio('bounce.mp3'), win: new Audio('win.mp3'),
+        boom: new Audio('boom.mp3'), collect: new Audio('collect.mp3')
+    };
+
+    function playSound(name) {
+        if (SOUNDS[name]) { SOUNDS[name].currentTime = 0; SOUNDS[name].play().catch(() => {}); }
+    }
+
+    function fitToScreen() {
+        const scaler = document.getElementById('game-scaler');
+        const screenWidth = window.innerWidth - 20;
+        const gameWidth = 800; 
+        scaler.style.transform = screenWidth < gameWidth ? `scale(${screenWidth / gameWidth})` : `scale(1)`;
+    }
+    window.addEventListener('resize', fitToScreen);
+    window.addEventListener('load', fitToScreen);
+
+    let wallet = 1000.00;
+    let tumbleValue = 0.00;
+    let betAmount = 1.00;
+    let gameActive = false;
+    let balls = [];
+    let objects = [];
+    let bounceCount = 0;
+    let highMultMode = false;
+    let noBoomActive = false;
+
+    const walletUI = document.getElementById('wallet-display');
+    const valUI = document.getElementById('val-display');
+    const bounceUI = document.getElementById('bounce-display');
+    const container = document.getElementById('game-container');
+    
+    class Ball {
+        constructor(isClone = false, startVal = 0.0) {
+            this.element = document.createElement('div');
+            this.element.className = 'ball';
+            const img = document.createElement('img');
+            img.src = isClone ? ASSETS.cloneBall : ASSETS.mainBall;
+            this.element.appendChild(img);
+            container.appendChild(this.element);
+
+            this.isClone = isClone;
+            this.x = 400; this.y = 250;
+            this.dx = (Math.random() > 0.5 ? 4.4 : -4.4);
+            this.dy = (Math.random() > 0.5 ? 4.4 : -4.4);
+            this.hits = isClone ? 15 : 999;
+        }
+
+        update() {
+            this.x += this.dx; this.y += this.dy;
+            const cornerMultStr = this.getCornerMult(this.x, this.y);
+            
+            if (cornerMultStr && cornerMultStr !== "NONE") {
+                const cornerMultVal = parseFloat(cornerMultStr);
+                const win = (tumbleValue * cornerMultVal);
+                playSound('win');
+                this.handleCornerHit(win);
+                return;
+            }
+
+            if (this.x <= 0 || this.x >= 765) { this.dx *= -1; this.onBounce(); }
+            if (this.y <= 0 || this.y >= 465) { this.dy *= -1; this.onBounce(); }
+            this.element.style.left = this.x + 'px';
+            this.element.style.top = this.y + 'px';
+        }
+
+        handleCornerHit(win) {
+            wallet += win;
+            walletUI.innerText = `$${wallet.toFixed(2)}`;
+            this.destroy();
+            showWinPopup(win);
+        }
+
+        getCornerMult(x, y) {
+            const s = 30; // Shrunk detection zone for long play
+            let id = null;
+            if (x < s && y < s) id = 'tl';
+            if (x > 800-s-35 && y < s) id = 'tr';
+            if (x < s && y > 500-s-35) id = 'bl';
+            if (x > 800-s-35 && y > 500-s-35) id = 'br';
+            return id ? document.getElementById(id).innerText : null;
+        }
+
+        onBounce() {
+            playSound('bounce');
+            if (!this.isClone) {
+                bounceCount++;
+                tumbleValue += 0.12; 
+                bounceUI.innerText = `${bounceCount} / 40 BOUNCES`;
+                randomizeCorners();
+                if (bounceCount >= 40) endGame(tumbleValue);
+            } else {
+                this.hits--;
+                tumbleValue += 0.08; 
+                if (this.hits <= 0) { tumbleValue += 0.50; this.destroy(); checkGameOver(); }
+            }
+        }
+        destroy() { this.element.remove(); balls = balls.filter(b => b !== this); }
+    }
+
+    function checkGameOver() { if (balls.length === 0 && gameActive) endGame(0); }
+
+    function spawnObj() {
+        if (!gameActive || objects.length > 2) return;
+        const types = ['boom', 'minus', 'sticky', 'special'];
+        const type = types[Math.floor(Math.random() * types.length)];
+        
+        // NO BOOM Logic: Prevent bombs
+        if (type === 'boom' && noBoomActive) return;
+        // BONUS Logic: Prevent Sticky Cashout in BOTH paid bonuses
+        if (type === 'sticky' && highMultMode) return;
+
+        const objDiv = document.createElement('div');
+        objDiv.className = `object`;
+        const img = document.createElement('img');
+        img.src = ASSETS[type];
+        objDiv.appendChild(img);
+        objDiv.style.left = (Math.random()*600+100)+'px'; objDiv.style.top = (Math.random()*300+100)+'px';
+        container.appendChild(objDiv);
+        objects.push({ el: objDiv, x: parseFloat(objDiv.style.left), y: parseFloat(objDiv.style.top), type });
+    }
+
+    function checkCollisions() {
+        balls.forEach(b => {
+            objects.forEach((o, i) => {
+                if (Math.hypot(b.x - o.x, b.y - o.y) < 35) {
+                    if (o.type === 'boom') { playSound('boom'); b.destroy(); checkGameOver(); }
+                    if (o.type === 'minus') { playSound('bounce'); tumbleValue *= 0.5; }
+                    if (o.type === 'sticky') { playSound('win'); wallet += tumbleValue; walletUI.innerText = `$${wallet.toFixed(2)}`; showWinPopup(tumbleValue); b.destroy(); }
+                    if (o.type === 'special') { playSound('collect'); balls.push(new Ball(true, 0)); }
+                    o.el.remove(); objects.splice(i, 1);
+                }
+            });
+        });
+    }
+
+    function randomizeCorners() {
+        document.querySelectorAll('.corner').forEach(c => {
+            const r = Math.random() * 100;
+            const span = c.querySelector('.c-val');
+            c.classList.remove('empty-corner');
+            c.style.color = 'white';
+            
+            // Warm-up period
+            if (bounceCount < 5) {
+                span.innerText = "NONE";
+                c.classList.add('empty-corner');
+                return;
+            }
+
+            if (highMultMode) { // Logic for both Paid Bonuses
+                if (r < 70) { 
+                    span.innerText = "NONE"; c.classList.add('empty-corner'); 
+                } else if (r < 90) { 
+                    span.innerText = (Math.random() * 2 + 2.0).toFixed(1) + "x"; c.style.color = 'var(--accent)';
+                } else {
+                    span.innerText = (Math.random() * 15 + 5).toFixed(1) + "x"; c.style.color = '#ffd700'; 
+                }
+            } else { // Standard Mode
+                if (r < 75) { 
+                    span.innerText = "NONE"; c.classList.add('empty-corner'); 
+                } else if (r < 92) { 
+                    span.innerText = (Math.random()*0.9+0.1).toFixed(1) + "x"; c.style.color = 'var(--danger)'; 
+                } else { 
+                    span.innerText = (Math.random()*10+2).toFixed(1) + "x"; c.style.color = 'var(--accent)'; 
+                }
+            }
+        });
+    }
+
+    function showWinPopup(payout) {
+        gameActive = false;
+        const totalMult = payout / betAmount;
+        document.getElementById('popup-title').innerText = payout > 0 ? "YOU WON" : "GAME OVER";
+        document.getElementById('popup-mult').innerText = `x${totalMult.toFixed(1)}`;
+        document.getElementById('popup-payout').innerText = `$${payout.toFixed(2)}`;
+        document.getElementById('popup-overlay').style.display = 'flex';
+    }
+
+    function closePopup() {
+        document.getElementById('popup-overlay').style.display = 'none';
+        balls.forEach(b => b.element.remove()); objects.forEach(o => o.el.remove());
+        balls = []; objects = []; document.getElementById('start-btn').disabled = false;
+        highMultMode = false; noBoomActive = false;
+        document.getElementById('mode-text').innerText = "STANDARD MODE";
+        document.getElementById('mode-text').style.color = "#b1bad3";
+    }
+
+    function endGame(payout) {
+        wallet += payout; walletUI.innerText = `$${wallet.toFixed(2)}`;
+        showWinPopup(payout);
+    }
+
+    function loop() {
+        if (!gameActive) return;
+        valUI.innerText = `$${tumbleValue.toFixed(2)}`;
+        balls.forEach(b => b.update());
+        checkCollisions();
+        if (Math.random() < 0.012) spawnObj(); 
+        requestAnimationFrame(loop);
+    }
+
+    document.getElementById('start-btn').onclick = () => {
+        if (wallet < betAmount) return; wallet -= betAmount; walletUI.innerText = `$${wallet.toFixed(2)}`;
+        gameActive = true; tumbleValue = 0.00; bounceCount = 0;
+        document.getElementById('start-btn').disabled = true;
+        balls.push(new Ball()); randomizeCorners(); loop();
+    };
+
+    document.getElementById('bonus1-btn').onclick = () => { 
+        if (wallet < 100) return; wallet -= 100; walletUI.innerText = `$${wallet.toFixed(2)}`;
+        highMultMode = true; noBoomActive = true; 
+        document.getElementById('mode-text').innerText = "NO BOOM BONUS";
+        document.getElementById('mode-text').style.color = "var(--accent)";
+        document.getElementById('start-btn').onclick(); 
+    };
+
+    document.getElementById('bonus2-btn').onclick = () => { 
+        if (wallet < 170) return; wallet -= 170; walletUI.innerText = `$${wallet.toFixed(2)}`;
+        gameActive = true; tumbleValue = 0.00; bounceCount = 0;
+        highMultMode = true; noBoomActive = false; // Start Clone can have bombs, but No Sticky
+        document.getElementById('start-btn').disabled = true;
+        balls.push(new Ball()); balls.push(new Ball(true, 0));
+        document.getElementById('mode-text').innerText = "START CLONE BONUS";
+        document.getElementById('mode-text').style.color = "var(--clone)";
+        randomizeCorners(); loop(); 
+    };
+
+    fitToScreen();
+</script>
+</body>
+</html>
