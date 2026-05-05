@@ -31,6 +31,8 @@
 	import FreeSpinOutro from './FreeSpinOutro.svelte';
 	import Transition from './Transition.svelte';
 	import I18nTest from './I18nTest.svelte';
+	import BouncingLex from './BouncingLex.svelte';
+	import BoardContainer from './BoardContainer.svelte';
 
 	const context = getContext();
 
@@ -75,6 +77,9 @@
 			<Anticipations />
 			<TumbleWinAmount />
 			<GlobalMultiplier />
+			<BoardContainer>
+				<BouncingLex betAmount={1.0} />
+			</BoardContainer>
 		</MainContainer>
 
 		<MainContainer>
