@@ -10,9 +10,9 @@ class GameConfig(Config):
 
     def __init__(self):
         super().__init__()
-        self.game_id = "fifty_fifty"
+        self.game_id = "lexlooter"
         self.provider_numer = 0
-        self.working_name = "fifty_fifty"
+        self.working_name = "lexlooter"
         self.wincap = 2
         self.win_type = "other"
         self.rtp = 0

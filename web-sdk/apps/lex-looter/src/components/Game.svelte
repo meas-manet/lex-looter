@@ -84,7 +84,7 @@
 
 		<UI>
 			{#snippet gameName()}
-				<UiGameName name="CLUSTER GAME" />
+				<UiGameName name="LEX LOOTER" />
 			{/snippet}
 			{#snippet logo()}
 				<Text
