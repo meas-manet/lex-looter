@@ -25,17 +25,15 @@
 	const context = getContext();
 	const parentCtx = getContextParent();
 
-	const W = BOARD_SIZES.width;
-	const H = BOARD_SIZES.height;
-
-	// Match HTML proportions: HTML is 800×500 with 35px ball, scale to board
+	// Game dimensions match HTML prototype exactly
+	const W = 800;
+	const H = 500;
 	const BALL_SIZE = 35;
 	const BALL_HALF = BALL_SIZE / 2;
 	const OBJ_SIZE = 40;
 	const OBJ_HALF = OBJ_SIZE / 2;
 	const SPEED = 4.4;
 	const CORNER_SIZE = 50;
-	const CORNER_DETECT = 30; // matches HTML s=30
 	const MAX_BOUNCES = 40;
 	const WARMUP = 5;
 	const OBJ_HIT_DIST = 35;
@@ -78,8 +76,18 @@
 	let texSticky: PIXI.Texture;
 	let texSpecial: PIXI.Texture;
 
-	// --- PIXI root ---
+	// --- PIXI root — scaled to fit board while preserving 8:5 aspect ratio ---
 	const root = new PIXI.Container();
+	const _SCALE = Math.min(BOARD_SIZES.width / W, BOARD_SIZES.height / H);
+	root.scale.set(_SCALE);
+	root.x = Math.round((BOARD_SIZES.width - W * _SCALE) / 2);
+	root.y = Math.round((BOARD_SIZES.height - H * _SCALE) / 2);
+
+	const _bg = new PIXI.Graphics();
+	_bg.rect(0, 0, W, H);
+	_bg.fill({ color: 0x07141d });
+	_bg.stroke({ color: 0x2f4553, width: 4 });
+	root.addChild(_bg);
 
 	// --- Corners ---
 	const cornerDefs = [
@@ -180,17 +188,13 @@
 		}
 	};
 
-	// Corner detection — only fires when ball has crossed BOTH walls simultaneously
-	// (i.e. physically reached the corner of the board, not just the zone of one wall).
-	const getCornerMult = (ball: BallState): string | null => {
-		const hitLeft = ball.x <= 0;
-		const hitRight = ball.x >= W - BALL_SIZE;
-		const hitTop = ball.y <= 0;
-		const hitBottom = ball.y >= H - BALL_SIZE;
-		if (hitLeft && hitTop) return cornersState[0].mult; // TL
-		if (hitRight && hitTop) return cornersState[1].mult; // TR
-		if (hitLeft && hitBottom) return cornersState[2].mult; // BL
-		if (hitRight && hitBottom) return cornersState[3].mult; // BR
+	// Corner detection — exact HTML logic: 30px proximity zone in each corner
+	const getCornerMult = (x: number, y: number): string | null => {
+		const s = 30;
+		if (x < s && y < s) return cornersState[0].mult; // TL
+		if (x > W - s - BALL_SIZE && y < s) return cornersState[1].mult; // TR
+		if (x < s && y > H - s - BALL_SIZE) return cornersState[2].mult; // BL
+		if (x > W - s - BALL_SIZE && y > H - s - BALL_SIZE) return cornersState[3].mult; // BR
 		return null;
 	};
 
@@ -232,8 +236,9 @@
 	const findSpawnPosition = (): { ox: number; oy: number } | null => {
 		const MAX_ATTEMPTS = 20;
 		for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
-			const ox = Math.random() * (W - 200) + 100;
-			const oy = Math.random() * (H - 200) + 100;
+			// HTML ranges: x in [100, 700], y in [100, 400]
+			const ox = Math.random() * 600 + 100;
+			const oy = Math.random() * 300 + 100;
 			// Check against every existing object
 			const tooClose = objects.some((o) => Math.hypot(ox - o.x, oy - o.y) < MIN_OBJ_DIST);
 			if (!tooClose) return { ox, oy };
@@ -308,15 +313,15 @@
 		return false;
 	};
 
+	// updateBall — exact copy of HTML Ball.update()
 	const updateBall = (ball: BallState) => {
 		if (!gameActive) return;
 
 		ball.x += ball.vx;
 		ball.y += ball.vy;
 
-		// Corner hit: only fires when ball has gone past BOTH walls at the same time.
-		// Check BEFORE clamping so out-of-bounds state is still visible.
-		const multStr = getCornerMult(ball);
+		// Corner check first, position-only 30px zone (matches HTML getCornerMult)
+		const multStr = getCornerMult(ball.x, ball.y);
 		if (multStr !== null && multStr !== 'NONE') {
 			const mult = parseFloat(multStr);
 			const payout = tumbleValue * mult;
@@ -326,26 +331,14 @@
 			return;
 		}
 
-		// Wall bounce — X and Y independent.
-		if (ball.x <= 0) {
-			ball.x = 0;
-			ball.vx = Math.abs(ball.vx);
-			if (onBounce(ball)) return;
-		} else if (ball.x >= W - BALL_SIZE) {
-			ball.x = W - BALL_SIZE;
-			ball.vx = -Math.abs(ball.vx);
+		// Two independent ifs — matches HTML exactly (corner hit counts as 2 bounces)
+		if (ball.x <= 0 || ball.x >= W - BALL_SIZE) {
+			ball.vx *= -1;
 			if (onBounce(ball)) return;
 		}
-
 		if (!gameActive) return;
-
-		if (ball.y <= 0) {
-			ball.y = 0;
-			ball.vy = Math.abs(ball.vy);
-			if (onBounce(ball)) return;
-		} else if (ball.y >= H - BALL_SIZE) {
-			ball.y = H - BALL_SIZE;
-			ball.vy = -Math.abs(ball.vy);
+		if (ball.y <= 0 || ball.y >= H - BALL_SIZE) {
+			ball.vy *= -1;
 			if (onBounce(ball)) return;
 		}
 
