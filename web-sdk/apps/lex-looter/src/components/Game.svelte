@@ -71,14 +71,14 @@
 		</MainContainer>
 
 		<MainContainer>
-			<Board />
+			<!-- <Board /> -->
 			<Anticipations />
 			<TumbleWinAmount />
 			<GlobalMultiplier />
 		</MainContainer>
 
 		<MainContainer>
-			<TumbleBoard />
+			<!-- <TumbleBoard /> -->
 			<ClusterWinAmounts />
 		</MainContainer>
 
